@@ -18,14 +18,15 @@ namespace ariel
     class Game
     {
     private:
-        Player p1;
-        Player p2;
+        Player * p1;
+        Player * p2;
         string winner;
         stack<string> turns;
+        int numberOfGames;
         void playWar(int round);
 
     public:
-        Game(Player first_player, Player second_player) :p1(first_player), p2(second_player) {};
+        Game(Player & first_player, Player & second_player);
         void divideCards();
         void playTurn();
         void printLastTurn();

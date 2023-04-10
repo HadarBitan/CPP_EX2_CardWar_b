@@ -18,6 +18,7 @@ namespace ariel
         string name;
         int cardsLeft;
         int cardWon;
+        int numOfWins;
         stack<Card> pack;
         string status;
 
@@ -29,12 +30,9 @@ namespace ariel
         Card drawCard();
         void createPack(Card card);
         void getStatus();
-        void setStatus();
+        void setStatus(int numberOfGames);
         string getName() const;
-        void winGame(int cards)
-        {
-            this->cardWon += cards;
-        }
+        void winGame(int cards);
     };
 }
 
