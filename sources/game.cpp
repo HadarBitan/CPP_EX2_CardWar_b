@@ -47,8 +47,6 @@ namespace ariel
     {
         if(this->p1 == this->p2)
             throw std::exception();
-
-        this->numberOfGames += 1;
         //case: both players run out of cards
         if(this->p1->stacksize() == 0 && this->p2->stacksize() == 0)
         {
@@ -57,7 +55,6 @@ namespace ariel
                 this->winner = this->p1->getName();
                 this->turns.push("the game ended, the winner is " + this->winner);
                 throw std::exception();
-                return;
             }
             else
             {
@@ -66,7 +63,6 @@ namespace ariel
                     this->winner = this->p2->getName();  
                     this->turns.push("the game ended, the winner is " + this->winner);
                     throw std::exception();
-                    return;   
                 }
                 else
                 {
@@ -74,12 +70,10 @@ namespace ariel
                     this->winner = "tie";
                     this->turns.push("the game ended in a tie");
                     throw std::exception();
-                    
-                    return;
                 }          
             }
         }    
-
+        this->numberOfGames += 1;
         Card c1 = this->p1->drawCard();
         Card c2 = this->p2->drawCard();
         if(c1.getCardNumber() == 1 && c2.getCardNumber() == 2)
@@ -88,8 +82,6 @@ namespace ariel
             string stat = this->p1->getName() + " played Ace of " + c1.getCardSymbol() + " " +
             this->p2->getName() + " played 2 of " + c2.getCardSymbol() + ". " + this->p2->getName() + " wins.";
             this->turns.push(stat);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             return;
         }
         if(c1.getCardNumber() == 2 && c2.getCardNumber() == 1)
@@ -98,11 +90,9 @@ namespace ariel
             string stat = this->p1->getName() + " played 2 of " + c1.getCardSymbol() + " " +
             this->p2->getName() + " played Ace of " + c2.getCardSymbol() + ". " + this->p1->getName() + " wins.";
             this->turns.push(stat);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             return;
         }
-        if(c1.getCardNumber() == 1 && c1.getCardNumber() != c2.getCardNumber())
+        if(c1.getCardNumber() == 1 && c2.getCardNumber() > 2)
         {
             string numberName;
             if(c2.getCardNumber() == 11)
@@ -112,16 +102,14 @@ namespace ariel
             if(c2.getCardNumber() == 13)
                 numberName = "King";
             else
-                numberName = (char)c2.getCardNumber();
+                numberName = std::to_string(c2.getCardNumber());
             this->p1->winGame(2);
             string stat = this->p1->getName() + " played Ace of " + c1.getCardSymbol() + " " +
             this->p2->getName() + " played " + numberName + " of " + c2.getCardSymbol() + ". " + this->p1->getName() + " wins.";
             this->turns.push(stat);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             return;
         }
-        if(c2.getCardNumber() == 1 && c1.getCardNumber() != c2.getCardNumber())
+        if(c2.getCardNumber() == 1 && c1.getCardNumber() > 2)
         {
             this->p2->winGame(2);
             string numberName;
@@ -132,13 +120,11 @@ namespace ariel
             if(c1.getCardNumber() == 13)
                 numberName = "King";
             else
-                numberName = (char)c1.getCardNumber();
+                numberName = std::to_string(c1.getCardNumber());
 
             string stat = this->p2->getName() + " played Ace of " + c2.getCardSymbol() + " " +
             this->p1->getName() + " played " + numberName + " of " + c1.getCardSymbol() + ". " + this->p2->getName() + " wins.";
             this->turns.push(stat);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             return;
         }
         if(c1.getCardNumber() > c2.getCardNumber())
@@ -152,7 +138,7 @@ namespace ariel
             if(c1.getCardNumber() == 13)
                 numberName1 = "King";
             else
-                numberName1 = (char)c1.getCardNumber();
+                numberName1 = std::to_string(c1.getCardNumber());
 
             if(c2.getCardNumber() == 11)
                 numberName2 = "Jack";
@@ -161,13 +147,11 @@ namespace ariel
             if(c2.getCardNumber() == 13)
                 numberName2 = "King";
             else
-                numberName2 = (char)c2.getCardNumber();
+                numberName2 = std::to_string(c2.getCardNumber());
 
             string stat = this->p1->getName() + " played " + numberName1 + " of " + c1.getCardSymbol() + " " +
             this->p2->getName() + " played " + numberName2 + " of " + c2.getCardSymbol() + ". " + this->p1->getName() + " wins.";
             this->turns.push(stat);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             return;
         }
         if(c1.getCardNumber() < c2.getCardNumber())
@@ -181,7 +165,7 @@ namespace ariel
             if(c1.getCardNumber() == 13)
                 numberName1 = "King";
             else
-                numberName1 = (char)c1.getCardNumber();
+                numberName1 = std::to_string(c1.getCardNumber());
 
             if(c2.getCardNumber() == 11)
                 numberName2 = "Jack";
@@ -190,13 +174,11 @@ namespace ariel
             if(c2.getCardNumber() == 13)
                 numberName2 = "King";
             else
-                numberName2 = (char)c2.getCardNumber();
+                numberName2 = std::to_string(c2.getCardNumber());
 
             string stat = this->p1->getName() + " played " + numberName1 + " of " + c1.getCardSymbol() + " " +
             this->p2->getName() + " played " + numberName2 + " of " + c2.getCardSymbol() + ". " + this->p2->getName() + " wins.";
             this->turns.push(stat);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             return;
         }
         if(c1.getCardNumber() == c2.getCardNumber())
@@ -210,7 +192,6 @@ namespace ariel
                 {
                     this->winner = this->p1->getName();
                     this->turns.push("the game ended, the winner is " + this->winner);
-                    throw std::exception();
                     return;
                 }
                 else
@@ -219,15 +200,13 @@ namespace ariel
                     {
                         this->winner = this->p2->getName(); 
                         this->turns.push("the game ended, the winner is " + this->winner); 
-                        throw std::exception();
-                        return;   
+                        return;
                     }
                     else
                     {
                         //if it's a tie will let the wu=inner be tie and we'll throw exception in the function printWiner
                         this->winner = "tie";
                         this->turns.push("the game ended in a tie");
-                        throw std::exception();
                         return;
                     }          
                 }
@@ -235,8 +214,6 @@ namespace ariel
 
             //after we verfied all the players still have cards we can continue in the war
             this->playWar(1);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
         }
     }
 
@@ -251,13 +228,10 @@ namespace ariel
         {
             this->p1->winGame(2 * round);
             this->p2->winGame(2 * round);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             if(this->p1->cardesTaken() > this->p2->cardesTaken())
             {
                 this->winner = this->p1->getName();
                 this->turns.push("the game ended, the winner is " + this->winner);
-                throw std::exception();
                 return;
             }
             else
@@ -266,15 +240,13 @@ namespace ariel
                 {
                     this->winner = this->p2->getName();  
                     this->turns.push("the game ended, the winner is " + this->winner);
-                    throw std::exception();
-                    return;   
+                    return;
                 }
                 else
                 {
                     //if it's a tie will let the wu=inner be tie and we'll throw exception in the function printWiner
                     this->winner = "tie";
                     this->turns.push("the game ended in a tie");
-                    throw std::exception();
                     return;
                 }          
             }
@@ -289,8 +261,6 @@ namespace ariel
             string stat = this->p1->getName() + " played Ace of " + c1.getCardSymbol() + " " +
             this->p2->getName() + " played 2 of " + c2.getCardSymbol() + ". " + this->p2->getName() + " wins.";
             this->turns.push(stat);
-            this->p1->setStatus(this->numberOfGames);
-            this->p2->setStatus(this->numberOfGames);
             return;
         }
         if(c1.getCardNumber() == 2 && c2.getCardNumber() == 1)
@@ -301,7 +271,7 @@ namespace ariel
             this->turns.push(stat);
             return;
         }
-        if(c1.getCardNumber() == 1 && c1.getCardNumber() != c2.getCardNumber())
+        if(c1.getCardNumber() == 1 && c2.getCardNumber() > 2)
         {
             this->p1->winGame(2 * (1 + (2 * round)));
             string numberName;
@@ -312,14 +282,14 @@ namespace ariel
             if(c2.getCardNumber() == 13)
                 numberName = "King";
             else
-                numberName = (char)c2.getCardNumber();
+                numberName = std::to_string(c2.getCardNumber());
 
             string stat = this->p1->getName() + " played Ace of " + c1.getCardSymbol() + " " +
             this->p2->getName() + " played " + numberName + " of " + c2.getCardSymbol() + ". " + this->p1->getName() + " wins.";
             this->turns.push(stat);
             return;
         }
-        if(c2.getCardNumber() == 1 && c1.getCardNumber() != c2.getCardNumber())
+        if(c2.getCardNumber() == 1 && c1.getCardNumber() > 2)
         {
             this->p2->winGame(2 * (1 + (2 * round)));
             string numberName;
@@ -330,7 +300,7 @@ namespace ariel
             if(c1.getCardNumber() == 13)
                 numberName = "King";
             else
-                numberName = (char)c1.getCardNumber();
+                numberName = std::to_string(c1.getCardNumber());
 
             string stat = this->p2->getName() + " played Ace of " + c2.getCardSymbol() + " " +
             this->p1->getName() + " played " + numberName + " of " + c1.getCardSymbol() + ". " + this->p2->getName() + " wins.";
@@ -348,7 +318,7 @@ namespace ariel
             if(c1.getCardNumber() == 13)
                 numberName1 = "King";
             else
-                numberName1 = (char)c1.getCardNumber();
+                numberName1 = std::to_string(c1.getCardNumber());
 
             if(c2.getCardNumber() == 11)
                 numberName2 = "Jack";
@@ -357,10 +327,10 @@ namespace ariel
             if(c2.getCardNumber() == 13)
                 numberName2 = "King";
             else
-                numberName2 = (char)c2.getCardNumber();
+                numberName2 = std::to_string(c2.getCardNumber());
 
-            string stat = this->p1->getName() + " played " + (char)c1.getCardNumber() + " of " + c1.getCardSymbol() + " " +
-            this->p2->getName() + " played " + (char)c2.getCardNumber() + " of " + c2.getCardSymbol() + ". " + this->p1->getName() + " wins.";
+            string stat = this->p1->getName() + " played " + numberName1 + " of " + c1.getCardSymbol() + " " +
+            this->p2->getName() + " played " + numberName2 + " of " + c2.getCardSymbol() + ". " + this->p1->getName() + " wins.";
             this->turns.push(stat);
             return;
         }
@@ -375,7 +345,7 @@ namespace ariel
             if(c1.getCardNumber() == 13)
                 numberName1 = "King";
             else
-                numberName1 = (char)c1.getCardNumber();
+                numberName1 = std::to_string(c1.getCardNumber());
 
             if(c2.getCardNumber() == 11)
                 numberName2 = "Jack";
@@ -384,10 +354,10 @@ namespace ariel
             if(c2.getCardNumber() == 13)
                 numberName2 = "King";
             else
-                numberName2 = (char)c2.getCardNumber();
+                numberName2 = std::to_string(c2.getCardNumber());
 
-            string stat = this->p1->getName() + " played " + (char)c1.getCardNumber() + " of " + c1.getCardSymbol() + " " +
-            this->p2->getName() + " played " + (char)c2.getCardNumber() + " of " + c2.getCardSymbol() + ". " + this->p2->getName() + " wins.";
+            string stat = this->p1->getName() + " played " + numberName1 + " of " + c1.getCardSymbol() + " " +
+            this->p2->getName() + " played " + numberName2 + " of " + c2.getCardSymbol() + ". " + this->p2->getName() + " wins.";
             this->turns.push(stat);
             return;
         }
@@ -403,7 +373,6 @@ namespace ariel
                 {
                     this->winner = this->p1->getName();
                     this->turns.push("the game ended, the winner is " + this->winner);
-                    throw std::exception();
                     return;
                 }
                 else
@@ -412,7 +381,6 @@ namespace ariel
                     {
                         this->winner = this->p2->getName();  
                         this->turns.push("the game ended, the winner is " + this->winner);
-                        throw std::exception();
                         return;   
                     }
                     else
@@ -420,7 +388,6 @@ namespace ariel
                         //if it's a tie will let the wu=inner be tie and we'll throw exception in the function printWiner
                         this->winner = "tie";
                         this->turns.push("the game ended in a tie");
-                        throw std::exception();
                         return;
                     }          
                 }
@@ -438,8 +405,7 @@ namespace ariel
 
     void Game::playAll() 
     {
-        //enough to check just one of the players 
-        while(this->p1->stacksize() > 0)
+        while(this->p1->stacksize() > 0 && this->p2->stacksize() > 0)
         {
             this->playTurn();
         }
@@ -493,6 +459,8 @@ namespace ariel
 
     void Game::printStats() 
     {
+        this->p1->setStatus(this->numberOfGames);
+        this->p2->setStatus(this->numberOfGames);
         this->p1->getStatus();
         this->p2->getStatus();
     }

@@ -41,20 +41,21 @@ namespace ariel
 
     void Player::getStatus()
     {
-        cout << this->status;
+        cout << this->status << endl;
     }
 
     void Player::setStatus(int numberOfGames)
     {
-        int winRate, drawRate, amountOfDraws;
-        winRate = (this->numOfWins / numberOfGames) * 100;
+        double winRate, drawRate;
+        int amountOfDraws;
+        winRate = (this->numOfWins * 100) / numberOfGames;
         amountOfDraws = 26 - this->cardsLeft;
-        drawRate = (amountOfDraws / numberOfGames) * 100;
-        this->status = this->name + ": \nWin Rate- " + (char)winRate + 
-        "%\nCards Won- " + (char)this->cardWon +
-        "\nCards Left- " + (char)this->cardsLeft +
-        "\nAmount Of Draws- " + (char)amountOfDraws +
-        "\nDraw Rate- " + (char)drawRate + "%";
+        drawRate = (amountOfDraws * 100) / numberOfGames;
+        this->status = this->name + ": \nWin Rate- " + std::to_string(winRate) + 
+        "\nCards Won- " + std::to_string(this->cardWon) +
+        "\nCards Left- " + std::to_string(this->cardsLeft) +
+        "\nAmount Of Draws- " + std::to_string(amountOfDraws) +
+        "\nDraw Rate- " + std::to_string(drawRate);
     }
 
     string Player::getName() const
