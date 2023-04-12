@@ -33,6 +33,7 @@ namespace ariel
         void setStatus(int numberOfGames);
         string getName() const;
         void winGame(int cards);
+        void reMatch();
     };
 }
 
